@@ -13,7 +13,8 @@ import SwiftUI
 
 struct LandmarkDetail: View {
     var landmark: Landmark
-    
+    @Binding var focus: Bool // 1. Binding으로 focus 변수 추가
+    //@Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         ScrollView {
@@ -26,8 +27,7 @@ struct LandmarkDetail: View {
                 .padding(.bottom, -130)
                 .onTapGesture {
                     print("Selected Landmark: \(landmark.name)")
-                }
-            
+                }            
             
             VStack(alignment: .leading) {
                 Text(landmark.name)
@@ -60,6 +60,12 @@ struct LandmarkDetail: View {
                 .font(.subheadline)
                 .foregroundColor(.secondary)
         }
+        .onAppear(){
+            focus = false
+        }
+        .onDisappear(){
+            focus = true
+        }
     }
 }
 
@@ -67,7 +73,7 @@ struct LandmarkDetail: View {
 struct LandmarkDetail_Previews: PreviewProvider {
     static var previews: some View {
         VStack{
-            LandmarkDetail(landmark: landmarks[1])
+            LandmarkDetail(landmark: landmarks[1], focus: .constant(false))
         }
         
     }
